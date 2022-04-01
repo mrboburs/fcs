@@ -1,0 +1,206 @@
+definitions:
+  main.DefaultError:
+    properties:
+      message:
+        type: string
+    type: object
+  main.ResponseError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  main.ResponseSuccess:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  model.Article:
+    properties:
+      author:
+        $ref: '#/definitions/model.Person'
+        description: Nested struct
+      body:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  model.Person:
+    properties:
+      firstname:
+        type: string
+      lastname:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: babdusalom@gmail.com
+    name: MY
+  description: This is a sample article server celler server.
+  termsOfService: http://github.com/Golang_Tutorial/Article_Array
+  title: Article API Docs
+  version: "2.0"
+paths:
+  /a:
+    get:
+      consumes:
+      - application/json
+      description: get all articles in memory
+      operationId: get-all-article-handler
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Article'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Show  all article
+      tags:
+      - Article
+    post:
+      consumes:
+      - application/json
+      description: it create article based on on input data
+      operationId: create-handler
+      parameters:
+      - description: Article data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Article'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.DefaultError'
+      summary: Create an Article
+      tags:
+      - Article
+  /a/id{id}:
+    delete:
+      consumes:
+      - application/json
+      description: it delete Article which you send id of article
+      operationId: delete-handler
+      parameters:
+      - description: Param ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.DefaultError'
+      summary: delete article by id
+      tags:
+      - Article
+    get:
+      consumes:
+      - application/json
+      description: it return Article which you send id
+      operationId: getarticle-by-id-handler
+      parameters:
+      - description: Param ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Article'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.DefaultError'
+      summary: get article by id
+      tags:
+      - Article
+    put:
+      consumes:
+      - application/json
+      description: it update article based on on input data
+      operationId: update-handler
+      parameters:
+      - description: Article data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Article'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.DefaultError'
+      summary: Update an Article
+      tags:
+      - Article
+swagger: "2.0"
